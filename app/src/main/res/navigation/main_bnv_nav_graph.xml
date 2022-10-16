@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_bnv_nav_graph"
+    app:startDestination="@id/employeeFragment">
+
+    <fragment
+        android:id="@+id/employeeFragment"
+        android:name="uz.pdp.carpet.ui.main.employee.EmployeeFragment"
+        android:label="fragment_employee"
+        tools:layout="@layout/fragment_employee" />
+    <fragment
+        android:id="@+id/saleFragment"
+        android:name="uz.pdp.carpet.ui.main.sale.SaleFragment"
+        android:label="fragment_sale"
+        tools:layout="@layout/fragment_sale" />
+    <fragment
+        android:id="@+id/factoryFragment"
+        android:name="uz.pdp.carpet.ui.main.factory.FactoryFragment"
+        android:label="fragment_factory"
+        tools:layout="@layout/fragment_factory" />
+    <fragment
+        android:id="@+id/productFragment"
+        android:name="uz.pdp.carpet.ui.main.product.ProductFragment"
+        android:label="fragment_product"
+        tools:layout="@layout/fragment_product" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="uz.pdp.carpet.ui.main.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

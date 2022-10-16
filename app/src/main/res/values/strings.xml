@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Carpet App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_login">Log In</string>
+    <string name="str_register">Sign Up</string>
+    <string name="str_phone_number">Phone number</string>
+    <string name="str_password">Password</string>
+    <string name="str_dont_account">Don\'t have an account?</string>
+    <string name="str_name">Name</string>
+    <string name="str_surname">Surname</string>
+    <string name="str_confirm_password">Confirm password</string>
+    <string name="str_network_error">Could not connect to the network</string>
+    <string name="str_login_success">Log in success!</string>
+    <string name="str_fill_all_feads">Make sure all fields are filled in !</string>
+    <string name="str_need_fill">You need to fill</string>
+    <string name="str_sign_up_success">Sign up success!</string>
+    <string name="str_pass_did_not_match">Passwords did not match</string>
+    <string name="str_logout_success">Logout success!</string>
+    <string name="str_checking_information">Oops! Please check your information again, there is a problem</string>
+    <string name="str_employee">Employee</string>
+    <string name="str_product">Product</string>
+    <string name="str_factory">Factory</string>
+    <string name="str_sale">Sale</string>
+    <string name="str_profile">Profile</string>
+
+</resources>
