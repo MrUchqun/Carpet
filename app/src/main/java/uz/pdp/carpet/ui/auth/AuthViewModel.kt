@@ -38,6 +38,7 @@ class AuthViewModel @Inject constructor(
             myRepository.signUp(userRegister).let {
                 if (it.isSuccessful) {
                     myRepository.login()
+                    myRepository.saveToken(it.body()!!.jwt)
                     _register.value = Resource.success(it.body()!!)
                 } else {
                     _register.value = Resource.error(it.errorBody()!!.string())
@@ -46,7 +47,8 @@ class AuthViewModel @Inject constructor(
         } catch (e: SocketTimeoutException) {
             _register.value = Resource.error(application.getString(R.string.str_network_error))
         } catch (e: Exception) {
-            _register.value = Resource.error(application.getString(R.string.str_checking_information))
+            _register.value =
+                Resource.error(application.getString(R.string.str_checking_information))
         }
     }
 
@@ -56,6 +58,7 @@ class AuthViewModel @Inject constructor(
             myRepository.signIn(userLogin).let {
                 if (it.isSuccessful) {
                     myRepository.login()
+                    myRepository.saveToken(it.body()!!.jwt)
                     _login.value = Resource.success(it.body()!!)
                 } else {
                     _login.value = Resource.error(it.errorBody()!!.string())

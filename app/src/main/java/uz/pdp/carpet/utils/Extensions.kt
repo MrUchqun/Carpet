@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -66,5 +67,13 @@ object Extensions {
                 error = null
             }
         }
+    }
+
+    fun SwipeRefreshLayout.show() {
+        isRefreshing = true
+    }
+
+    fun SwipeRefreshLayout.hide() {
+        isRefreshing = false
     }
 }

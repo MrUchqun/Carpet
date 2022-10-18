@@ -23,5 +23,7 @@
     <string name="str_factory">Factory</string>
     <string name="str_sale">Sale</string>
     <string name="str_profile">Profile</string>
+    <string name="str_search_by_name">Search by name</string>
+    <string name="str_thats_all">That\'s all!</string>
 
 </resources>

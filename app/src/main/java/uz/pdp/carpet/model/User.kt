@@ -24,10 +24,3 @@ data class UserLogin(
     val password: String,
     val phoneNumber: String
 )
-
-data class AuthErrorResponse(
-    val error: String,
-    val path: String,
-    val status: Int,
-    val timestamp: String
-)
