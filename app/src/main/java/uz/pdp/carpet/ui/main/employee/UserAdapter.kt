@@ -58,7 +58,9 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
         if (currentList.isNotEmpty())
             result.addAll(currentList)
 
-        result.addAll(list)
+        if (list.isNotEmpty())
+            result.addAll(list)
+
         submitList(result)
     }
 
