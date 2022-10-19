@@ -8,10 +8,7 @@ import kotlinx.coroutines.flow.flowOn
 import okhttp3.Dispatcher
 import retrofit2.Response
 import uz.pdp.carpet.data.remote.ApiService
-import uz.pdp.carpet.model.PageResponse
-import uz.pdp.carpet.model.User
-import uz.pdp.carpet.model.UserLogin
-import uz.pdp.carpet.model.UserRegister
+import uz.pdp.carpet.model.*
 import uz.pdp.carpet.utils.Constants.JWT_TOKEN
 import uz.pdp.carpet.utils.Constants.STATE
 import uz.pdp.carpet.utils.Constants.USER_LOGIN
@@ -52,5 +49,9 @@ class MyRepositoryImpl @Inject constructor(
 
     override suspend fun profileAdmPaginationList(page: Int, size: Int): Response<PageResponse> {
         return api.profileAdmPaginationList(page, size)
+    }
+
+    override suspend fun searchProfile(userFilter: UserFilter): Response<List<User>> {
+        return api.searchProfile(userFilter)
     }
 }

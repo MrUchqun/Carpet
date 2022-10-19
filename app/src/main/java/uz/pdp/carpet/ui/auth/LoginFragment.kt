@@ -14,18 +14,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import uz.pdp.carpet.R
 import uz.pdp.carpet.databinding.FragmentLoginBinding
 import uz.pdp.carpet.model.UserLogin
+import uz.pdp.carpet.ui.BaseFragment
 import uz.pdp.carpet.utils.Constants.PHONE_PREFIX
 import uz.pdp.carpet.utils.Constants.USER_LOGIN
 import uz.pdp.carpet.utils.Extensions.checkError
 import uz.pdp.carpet.utils.Extensions.click
-import uz.pdp.carpet.utils.Extensions.hideLoading
-import uz.pdp.carpet.utils.Extensions.showLoading
 import uz.pdp.carpet.utils.Extensions.text
 import uz.pdp.carpet.utils.Extensions.toast
 import uz.pdp.carpet.utils.Resource
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private var _bn: FragmentLoginBinding? = null
     private val bn get() = _bn!!

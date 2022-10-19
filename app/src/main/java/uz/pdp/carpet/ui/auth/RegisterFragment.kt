@@ -12,17 +12,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import uz.pdp.carpet.R
 import uz.pdp.carpet.databinding.FragmentRegisterBinding
 import uz.pdp.carpet.model.UserRegister
+import uz.pdp.carpet.ui.BaseFragment
 import uz.pdp.carpet.utils.Constants.PHONE_PREFIX
 import uz.pdp.carpet.utils.Extensions.checkError
 import uz.pdp.carpet.utils.Extensions.click
-import uz.pdp.carpet.utils.Extensions.hideLoading
-import uz.pdp.carpet.utils.Extensions.showLoading
 import uz.pdp.carpet.utils.Extensions.text
 import uz.pdp.carpet.utils.Extensions.toast
 import uz.pdp.carpet.utils.Resource
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseFragment() {
 
     private val TAG: String? = RegisterFragment::class.simpleName
 

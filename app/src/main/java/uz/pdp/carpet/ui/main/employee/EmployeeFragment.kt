@@ -1,17 +1,19 @@
 package uz.pdp.carpet.ui.main.employee
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import dagger.hilt.android.AndroidEntryPoint
 import uz.pdp.carpet.R
 import uz.pdp.carpet.databinding.FragmentEmployeeBinding
+import uz.pdp.carpet.model.UserFilter
+import uz.pdp.carpet.ui.BaseFragment
 import uz.pdp.carpet.utils.Extensions.hide
 import uz.pdp.carpet.utils.Extensions.show
 import uz.pdp.carpet.utils.Extensions.toast
@@ -19,18 +21,17 @@ import uz.pdp.carpet.utils.Resource
 
 
 @AndroidEntryPoint
-class EmployeeFragment : Fragment() {
+class EmployeeFragment : BaseFragment() {
 
     private var _bn: FragmentEmployeeBinding? = null
     private val bn get() = _bn!!
 
     private val viewModel: EmployeeViewModel by viewModels()
     private val userAdapter = UserAdapter()
+    private var isLoadData = false
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _bn = FragmentEmployeeBinding.inflate(inflater, container, false)
         return bn.root
@@ -41,6 +42,7 @@ class EmployeeFragment : Fragment() {
         observer()
         initViews()
         viewModel.loadData()
+        isLoadData = true
     }
 
     private fun initViews() = bn.apply {
@@ -52,8 +54,9 @@ class EmployeeFragment : Fragment() {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    if (!recyclerView.canScrollVertically(1)) {
-                        viewModel.profileAdmPaginationList()
+                    if (!recyclerView.canScrollVertically(1) && etSearch.editText!!.text.isEmpty()) {
+                        if (isLoadData) viewModel.profileAdmPaginationList()
+                        else isLoadData = true
                     }
                 }
             })
@@ -68,13 +71,32 @@ class EmployeeFragment : Fragment() {
             )
 
             setOnRefreshListener {
-                viewModel.profileAdmPaginationList()
+                if (etSearch.editText!!.text.isEmpty()) {
+                    viewModel.profileAdmPaginationList()
+                } else {
+                    hide()
+                }
             }
         }
+
+        etSearch.apply {
+            editText?.apply {
+                addTextChangedListener {
+                    userAdapter.submitList(null)
+                    if (text.isNotEmpty()) {
+                        viewModel.searchProfile(UserFilter(name = text.toString()))
+                    } else {
+                        viewModel.loadData()
+                        isLoadData = false
+                    }
+                }
+            }
+        }
+
     }
 
     private fun observer() {
-        viewModel.userList.observe(viewLifecycleOwner) {
+        viewModel.paginationUserList.observe(viewLifecycleOwner) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     bn.swipeRefreshLayout.hide()
@@ -82,7 +104,10 @@ class EmployeeFragment : Fragment() {
                 }
                 Resource.Status.ERROR -> {
                     bn.swipeRefreshLayout.hide()
-                    toast(it.message!!)
+                    it.message.let { msg ->
+                        toast(msg)
+                        logout(msg)
+                    }
                 }
                 Resource.Status.LOADING -> {
                     bn.swipeRefreshLayout.show()
@@ -95,5 +120,4 @@ class EmployeeFragment : Fragment() {
         super.onDestroyView()
         _bn = null
     }
-
 }

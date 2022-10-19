@@ -27,8 +27,8 @@ object Extensions {
         }
     }
 
-    fun Fragment.toast(msg: String) {
-        Snackbar.make(view!!, msg, Snackbar.LENGTH_SHORT).apply {
+    fun Fragment.toast(msg: String?) {
+        Snackbar.make(requireParentFragment().requireView(), msg!!, Snackbar.LENGTH_SHORT).apply {
             view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
                 typeface =
                     ResourcesCompat.getFont(requireActivity().applicationContext, R.font.poppins)
@@ -41,16 +41,6 @@ object Extensions {
                 )
             )
         }.show()
-    }
-
-    fun Fragment.showLoading(progressBar: ProgressBar, button: Button) {
-        progressBar.visibility = View.VISIBLE
-        button.visibility = View.INVISIBLE
-    }
-
-    fun Fragment.hideLoading(progressBar: ProgressBar, button: Button) {
-        progressBar.visibility = View.INVISIBLE
-        button.visibility = View.VISIBLE
     }
 
     fun TextInputLayout.text(): String {

@@ -24,3 +24,13 @@ data class UserLogin(
     val password: String,
     val phoneNumber: String
 )
+
+data class UserFilter(
+    val createdDateFrom: String? = null,
+    val createdDateTo: String? = null,
+    val name: String? = null,
+    val phoneNumber: String? = null,
+    val role: String? = null,
+    val status: String? = null,
+    val surname: String? = null
+)

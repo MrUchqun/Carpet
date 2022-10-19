@@ -25,5 +25,6 @@
     <string name="str_profile">Profile</string>
     <string name="str_search_by_name">Search by name</string>
     <string name="str_thats_all">That\'s all!</string>
+    <string name="str_relogin">Please log back in!</string>
 
 </resources>

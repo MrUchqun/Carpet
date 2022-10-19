@@ -54,7 +54,10 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
 
     fun updateList(list: List<User>) {
         val result = ArrayList<User>()
-        result.addAll(currentList)
+
+        if (currentList.isNotEmpty())
+            result.addAll(currentList)
+
         result.addAll(list)
         submitList(result)
     }

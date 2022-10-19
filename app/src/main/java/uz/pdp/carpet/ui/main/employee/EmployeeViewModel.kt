@@ -8,8 +8,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import uz.pdp.carpet.R
 import uz.pdp.carpet.model.User
+import uz.pdp.carpet.model.UserFilter
 import uz.pdp.carpet.repository.MyRepository
-import uz.pdp.carpet.repository.MyRepositoryImpl
 import uz.pdp.carpet.utils.Resource
 import uz.pdp.carpet.utils.SingleLiveEvent
 import java.net.SocketTimeoutException
@@ -21,8 +21,8 @@ class EmployeeViewModel @Inject constructor(
     private val application: Application
 ) : ViewModel() {
 
-    private var _userList = SingleLiveEvent<Resource<List<User>>>()
-    val userList: LiveData<Resource<List<User>>> get() = _userList
+    private var _paginationUserList = SingleLiveEvent<Resource<List<User>>>()
+    val paginationUserList: LiveData<Resource<List<User>>> get() = _paginationUserList
 
     private var currentPage = 0
     private var totalPage = 1
@@ -36,23 +36,60 @@ class EmployeeViewModel @Inject constructor(
     fun profileAdmPaginationList() = viewModelScope.launch {
         if (currentPage < totalPage) {
             try {
-                _userList.value = Resource.loading()
-                myRepository.profileAdmPaginationList(currentPage++, 10).let {
+                _paginationUserList.value = Resource.loading()
+
+                myRepository.profileAdmPaginationList(currentPage, 10).let {
                     if (it.isSuccessful) {
+                        _paginationUserList.value = Resource.success(it.body()!!.content)
+
                         totalPage = it.body()!!.totalPages
-                        _userList.value = Resource.success(it.body()!!.content)
+                        currentPage++
+
+                    } else if (it.code() == 401) {
+                        _paginationUserList.value =
+                            Resource.error(application.getString(R.string.str_relogin))
                     } else {
-                        _userList.value = Resource.error(it.errorBody()!!.string())
+                        _paginationUserList.value = Resource.error(it.errorBody()!!.string())
                     }
                 }
+
             } catch (e: SocketTimeoutException) {
-                _userList.value = Resource.error(application.getString(R.string.str_network_error))
+                _paginationUserList.value =
+                    Resource.error(application.getString(R.string.str_network_error))
             } catch (e: Exception) {
-                _userList.value =
+                _paginationUserList.value =
                     Resource.error(application.getString(R.string.str_checking_information))
             }
         } else {
-            _userList.value = Resource.error(application.getString(R.string.str_thats_all))
+            _paginationUserList.value =
+                Resource.error(application.getString(R.string.str_thats_all))
+        }
+    }
+
+    fun searchProfile(userFilter: UserFilter) = viewModelScope.launch {
+        currentPage = 0
+        totalPage = 1
+
+        try {
+            _paginationUserList.value = Resource.loading()
+
+            myRepository.searchProfile(userFilter).let {
+                if (it.isSuccessful) {
+                    _paginationUserList.value = Resource.success(it.body()!!)
+                } else if (it.code() == 401) {
+                    _paginationUserList.value =
+                        Resource.error(application.getString(R.string.str_relogin))
+                } else {
+                    _paginationUserList.value = Resource.error(it.errorBody()!!.string())
+                }
+            }
+
+        } catch (e: SocketTimeoutException) {
+            _paginationUserList.value =
+                Resource.error(application.getString(R.string.str_network_error))
+        } catch (e: Exception) {
+            _paginationUserList.value =
+                Resource.error(application.getString(R.string.str_checking_information))
         }
     }
 

@@ -7,10 +7,7 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
-import uz.pdp.carpet.model.PageResponse
-import uz.pdp.carpet.model.User
-import uz.pdp.carpet.model.UserLogin
-import uz.pdp.carpet.model.UserRegister
+import uz.pdp.carpet.model.*
 
 interface ApiService {
 
@@ -25,4 +22,7 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<PageResponse>
+
+    @POST("profile/adm/filter")
+    suspend fun searchProfile(@Body userFilter: UserFilter): Response<List<User>>
 }
