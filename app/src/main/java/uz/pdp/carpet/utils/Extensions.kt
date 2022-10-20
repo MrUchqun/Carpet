@@ -1,15 +1,19 @@
 package uz.pdp.carpet.utils
 
 import android.annotation.SuppressLint
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -17,6 +21,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import uz.pdp.carpet.R
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 object Extensions {
@@ -66,4 +72,7 @@ object Extensions {
     fun SwipeRefreshLayout.hide() {
         isRefreshing = false
     }
+
+    fun EditText.getSearchText(): List<String> =
+        text.toString().trim().lowercase(Locale.getDefault()).split(" ")
 }

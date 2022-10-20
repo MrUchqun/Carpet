@@ -1,7 +1,6 @@
 package uz.pdp.carpet.ui.main.employee
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,12 @@ import uz.pdp.carpet.R
 import uz.pdp.carpet.databinding.FragmentEmployeeBinding
 import uz.pdp.carpet.model.UserFilter
 import uz.pdp.carpet.ui.BaseFragment
+import uz.pdp.carpet.utils.Extensions.getSearchText
 import uz.pdp.carpet.utils.Extensions.hide
 import uz.pdp.carpet.utils.Extensions.show
 import uz.pdp.carpet.utils.Extensions.toast
 import uz.pdp.carpet.utils.Resource
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -28,7 +29,6 @@ class EmployeeFragment : BaseFragment() {
 
     private val viewModel: EmployeeViewModel by viewModels()
     private val userAdapter = UserAdapter()
-    private var isLoadData = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -41,8 +41,7 @@ class EmployeeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         observer()
         initViews()
-        viewModel.loadData()
-        isLoadData = true
+        loadData()
     }
 
     private fun initViews() = bn.apply {
@@ -54,9 +53,8 @@ class EmployeeFragment : BaseFragment() {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    if (!recyclerView.canScrollVertically(1) && etSearch.editText!!.text.isEmpty()) {
-                        if (isLoadData) viewModel.profileAdmPaginationList()
-                        else isLoadData = true
+                    if (!recyclerView.canScrollVertically(1) && etSearch.editText!!.text.isEmpty() && viewModel.currentPage > 0) {
+                        viewModel.profileAdmPaginationList()
                     }
                 }
             })
@@ -72,7 +70,7 @@ class EmployeeFragment : BaseFragment() {
 
             setOnRefreshListener {
                 if (etSearch.editText!!.text.isEmpty()) {
-                    viewModel.profileAdmPaginationList()
+                    loadData()
                 } else {
                     hide()
                 }
@@ -82,12 +80,19 @@ class EmployeeFragment : BaseFragment() {
         etSearch.apply {
             editText?.apply {
                 addTextChangedListener {
-                    userAdapter.submitList(null)
                     if (text.isNotEmpty()) {
-                        viewModel.searchProfile(UserFilter(name = text.toString()))
+                        userAdapter.submitList(null)
+                        getSearchText().apply {
+                            viewModel.searchProfile(
+                                when (size) {
+                                    1 -> UserFilter(name = get(0))
+                                    2 -> UserFilter(name = get(0), surname = get(1))
+                                    else -> UserFilter(name = "${get(0)} ${get(1)} ${get(2)}")
+                                }
+                            )
+                        }
                     } else {
-                        viewModel.loadData()
-                        isLoadData = false
+                        loadData()
                     }
                 }
             }
@@ -100,7 +105,7 @@ class EmployeeFragment : BaseFragment() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     bn.swipeRefreshLayout.hide()
-                    userAdapter.updateList(it.data!!)
+                    userAdapter.updateList(it.data!!.toMutableList())
                 }
                 Resource.Status.ERROR -> {
                     bn.swipeRefreshLayout.hide()
@@ -114,6 +119,11 @@ class EmployeeFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun loadData() {
+        userAdapter.submitList(null)
+        viewModel.loadData()
     }
 
     override fun onDestroyView() {

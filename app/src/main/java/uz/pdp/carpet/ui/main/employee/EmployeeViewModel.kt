@@ -1,6 +1,7 @@
 package uz.pdp.carpet.ui.main.employee
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,14 +25,15 @@ class EmployeeViewModel @Inject constructor(
     private var _paginationUserList = SingleLiveEvent<Resource<List<User>>>()
     val paginationUserList: LiveData<Resource<List<User>>> get() = _paginationUserList
 
-    private var currentPage = 0
+    var currentPage = 0
     private var totalPage = 1
 
     fun loadData() {
-        if (currentPage == 0) {
-            profileAdmPaginationList()
-        }
+        currentPage = 0
+        totalPage = 1
+        profileAdmPaginationList()
     }
+
 
     fun profileAdmPaginationList() = viewModelScope.launch {
         if (currentPage < totalPage) {
@@ -67,9 +69,6 @@ class EmployeeViewModel @Inject constructor(
     }
 
     fun searchProfile(userFilter: UserFilter) = viewModelScope.launch {
-        currentPage = 0
-        totalPage = 1
-
         try {
             _paginationUserList.value = Resource.loading()
 

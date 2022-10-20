@@ -52,17 +52,6 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
         }
     }
 
-    fun updateList(list: List<User>) {
-        val result = ArrayList<User>()
-
-        if (currentList.isNotEmpty())
-            result.addAll(currentList)
-
-        if (list.isNotEmpty())
-            result.addAll(list)
-
-        submitList(result)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder =
         UserViewHolder(
@@ -78,5 +67,12 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean = oldItem == newItem
 
         override fun areContentsTheSame(oldItem: User, newItem: User): Boolean = oldItem == newItem
+    }
+
+    fun updateList(list: MutableList<User>) {
+        val newList = currentList.toMutableList()
+        if (newList != list)
+            newList.addAll(list)
+        submitList(newList)
     }
 }
