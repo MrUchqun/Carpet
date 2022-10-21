@@ -1,9 +1,11 @@
 package uz.pdp.carpet.ui.main.employee
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +17,9 @@ import uz.pdp.carpet.model.UserFilter
 import uz.pdp.carpet.ui.BaseFragment
 import uz.pdp.carpet.utils.Extensions.getSearchText
 import uz.pdp.carpet.utils.Extensions.hide
+import uz.pdp.carpet.utils.Extensions.hideSoftKeyboard
 import uz.pdp.carpet.utils.Extensions.show
+import uz.pdp.carpet.utils.Extensions.text
 import uz.pdp.carpet.utils.Extensions.toast
 import uz.pdp.carpet.utils.Resource
 import java.util.*
@@ -35,6 +39,11 @@ class EmployeeFragment : BaseFragment() {
     ): View {
         _bn = FragmentEmployeeBinding.inflate(inflater, container, false)
         return bn.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupUI(bn.parentView, bn.etSearch.editText!!)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,7 +89,7 @@ class EmployeeFragment : BaseFragment() {
         etSearch.apply {
             editText?.apply {
                 addTextChangedListener {
-                    if (text.isNotEmpty()) {
+                    if (text().isNotEmpty()) {
                         userAdapter.submitList(null)
                         getSearchText().apply {
                             viewModel.searchProfile(
@@ -95,6 +104,19 @@ class EmployeeFragment : BaseFragment() {
                         loadData()
                     }
                 }
+
+
+                setOnEditorActionListener { _, i, keyEvent ->
+                    if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER || i == EditorInfo.IME_ACTION_DONE) {
+                        hideSoftKeyboard(this)
+                    }
+                    false
+                }
+
+            }
+
+            setEndIconOnClickListener {
+                toast("click")
             }
         }
 

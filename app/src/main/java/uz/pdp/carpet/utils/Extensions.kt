@@ -1,9 +1,12 @@
 package uz.pdp.carpet.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.text.Editable
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -26,6 +29,16 @@ import kotlin.collections.ArrayList
 
 
 object Extensions {
+
+    fun Fragment.hideSoftKeyboard(editText: EditText) {
+        requireActivity().currentFocus?.let {
+            val inputMethodManager =
+                ContextCompat.getSystemService(requireActivity(), InputMethodManager::class.java)!!
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+
+        editText.clearFocus()
+    }
 
     fun View.click(click: () -> Unit) {
         setOnClickListener {
