@@ -44,10 +44,7 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
                             else -> R.color.color_warring
                         }
                     )
-                ),
-                0,
-                role.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                ), 0, role.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
     }
@@ -71,8 +68,7 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
 
     fun updateList(list: MutableList<User>) {
         val newList = currentList.toMutableList()
-        if (newList != list)
-            newList.addAll(list)
+        if (newList != list) newList.addAll(list)
         submitList(newList)
     }
 }

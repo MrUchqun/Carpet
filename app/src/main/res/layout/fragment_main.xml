@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.main.MainFragment">
 
     <fragment
@@ -28,7 +28,8 @@
         app:itemIconSize="26dp"
         app:itemIconTint="@color/bnv_item_icon_color"
         app:itemTextAppearanceActive="@style/active_text_appearance"
-        app:itemTextAppearanceInactive="@style/no_active_text_appearance"
+        app:itemTextAppearanceInactive="@style/active_text_appearance"
+        app:itemTextColor="@color/bnv_item_icon_color"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

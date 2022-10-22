@@ -26,5 +26,16 @@
     <string name="str_search_by_name">Search by name</string>
     <string name="str_thats_all">That\'s all!</string>
     <string name="str_relogin">Please log back in!</string>
+    <string name="str_fill_in_optional">Fill in optional information</string>
+    <string name="str_admin">Admin</string>
+    <string name="str_customer">Customer</string>
+    <string name="str_active">Active</string>
+    <string name="str_not_active">Not active</string>
+    <string name="str_blocked">Blocked</string>
+    <string name="str_select_role">Select role (optional)</string>
+    <string name="str_select_status">Select status (optional)</string>
+    <string name="str_apply">Apply</string>
+    <string name="str_cancel">Cancel</string>
+    <string name="str_filter">Filter</string>
 
 </resources>
