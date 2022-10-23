@@ -37,7 +37,8 @@ class EmployeeFragment : BaseFragment() {
     private val viewModel: EmployeeViewModel by viewModels()
     private val userAdapter = UserAdapter()
 
-    private lateinit var fDialogBinding: DialogUserFilterBinding
+    private var _fDialogBinding: DialogUserFilterBinding? = null
+    private val fDialogBinding get() = _fDialogBinding!!
     private lateinit var fDialog: Dialog
     private var isFilter = false
 
@@ -45,24 +46,19 @@ class EmployeeFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _bn = FragmentEmployeeBinding.inflate(inflater, container, false)
-        fDialogBinding = DialogUserFilterBinding.inflate(inflater)
+        _fDialogBinding = DialogUserFilterBinding.inflate(inflater)
         return bn.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setupUI(bn.parentView, bn.etSearch.editText!!)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupUI(bn.parentView, bn.etSearch.editText!!)
         observer()
         initViews()
         loadData()
     }
 
     private fun initViews() = bn.apply {
-
         fDialog = Dialog(requireContext(), R.style.Theme_Carpet).apply {
             setContentView(fDialogBinding.root)
             window?.attributes?.windowAnimations = R.style.DialogAnimation

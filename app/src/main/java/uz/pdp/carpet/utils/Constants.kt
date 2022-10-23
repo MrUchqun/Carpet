@@ -15,6 +15,6 @@ object Constants {
     const val STR_CUSTOMER = "CUSTOMER"
     const val STR_EMPLOYEE = "EMPLOYEE"
     const val STR_ACTIVE = "ACTIVE"
-    const val STR_NOT_ACTIVE = "NOT ACTIVE"
+    const val STR_NOT_ACTIVE = "NOT_ACTIVE"
     const val STR_BLOCKED = "BLOCKED"
 }

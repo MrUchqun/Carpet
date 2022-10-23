@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Carpet" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+    <style name="Theme.Carpet" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/color_primary</item>
         <!-- Secondary brand color. -->
@@ -9,5 +9,66 @@
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Customize your theme here. -->
+        <item name="snackbarStyle">@style/MySnackbar</item>
     </style>
+
+    <style name="SplashScreen" parent="Theme.Carpet">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/color_error</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="prefix_text_appearance" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="active_text_appearance" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="textInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxCornerRadiusBottomEnd">5dp</item>
+        <item name="boxCornerRadiusBottomStart">5dp</item>
+        <item name="boxCornerRadiusTopEnd">5dp</item>
+        <item name="boxCornerRadiusTopStart">5dp</item>
+        <item name="boxStrokeColor">@color/color_primary</item>
+        <item name="boxStrokeErrorColor">@color/color_error</item>
+        <item name="errorTextAppearance">@style/error_appearance</item>
+        <item name="hintTextColor">@color/color_primary</item>
+    </style>
+
+    <style name="searchTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxCornerRadiusBottomEnd">5dp</item>
+        <item name="boxCornerRadiusBottomStart">5dp</item>
+        <item name="boxCornerRadiusTopEnd">5dp</item>
+        <item name="boxCornerRadiusTopStart">5dp</item>
+        <item name="boxBackgroundColor">@color/color_back</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="hintEnabled">false</item>
+        <item name="startIconDrawable">@drawable/ic_search</item>
+        <item name="startIconTint">@color/color_disable</item>
+        <item name="endIconDrawable">@drawable/ic_filter</item>
+        <item name="endIconTint">@color/color_secondary</item>
+        <item name="endIconMode">custom</item>
+    </style>
+
+    <style name="cornerSize10Dp">
+        <item name="cornerSize">5dp</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_right</item>
+    </style>
+
+    <style name="MySnackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="cornerRadius">10dp</item>
+    </style>
+
 </resources>
