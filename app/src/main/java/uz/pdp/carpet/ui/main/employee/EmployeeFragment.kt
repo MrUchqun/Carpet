@@ -1,9 +1,6 @@
 package uz.pdp.carpet.ui.main.employee
 
-import android.annotation.SuppressLint
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -30,8 +27,6 @@ import uz.pdp.carpet.utils.Extensions.show
 import uz.pdp.carpet.utils.Extensions.text
 import uz.pdp.carpet.utils.Extensions.toast
 import uz.pdp.carpet.utils.Resource
-import java.util.*
-
 
 @AndroidEntryPoint
 class EmployeeFragment : BaseFragment() {
@@ -42,12 +37,15 @@ class EmployeeFragment : BaseFragment() {
     private val viewModel: EmployeeViewModel by viewModels()
     private val userAdapter = UserAdapter()
 
+    private lateinit var fDialogBinding: DialogUserFilterBinding
+    private lateinit var fDialog: Dialog
     private var isFilter = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _bn = FragmentEmployeeBinding.inflate(inflater, container, false)
+        fDialogBinding = DialogUserFilterBinding.inflate(inflater)
         return bn.root
     }
 
@@ -64,6 +62,16 @@ class EmployeeFragment : BaseFragment() {
     }
 
     private fun initViews() = bn.apply {
+
+        fDialog = Dialog(requireContext(), R.style.Theme_Carpet).apply {
+            setContentView(fDialogBinding.root)
+            window?.attributes?.windowAnimations = R.style.DialogAnimation
+            window?.attributes = LayoutParams().apply {
+                copyFrom(window?.attributes)
+                width = LayoutParams.MATCH_PARENT
+                height = LayoutParams.MATCH_PARENT
+            }
+        }
 
         recyclerView.apply {
             layoutManager =
@@ -90,7 +98,7 @@ class EmployeeFragment : BaseFragment() {
 
             setOnRefreshListener {
                 if (etSearch.editText!!.text.isEmpty()) {
-                    isFilter = false
+                    if (isFilter) closeFilterDialog()
                     loadData()
                 } else {
                     hide()
@@ -102,21 +110,24 @@ class EmployeeFragment : BaseFragment() {
             editText?.apply {
                 addTextChangedListener {
                     isFilter = false
-                    if (text().isNotEmpty()) {
-                        getSearchText().apply {
-                            filterUser(
-                                when (size) {
-                                    1 -> UserFilter(name = get(0))
-                                    2 -> UserFilter(name = get(0), surname = get(1))
-                                    else -> UserFilter(name = "${get(0)} ${get(1)} ${get(2)}")
-                                }
-                            )
+                    if (text.isNotEmpty()) {
+                        setEndIconDrawable(R.drawable.ic_close)
+                        if (text().isNotEmpty()) {
+                            getSearchText().apply {
+                                filterUser(
+                                    when (size) {
+                                        1 -> UserFilter(name = get(0))
+                                        2 -> UserFilter(name = get(0), surname = get(1))
+                                        else -> UserFilter(name = "${get(0)} ${get(1)} ${get(2)}")
+                                    }
+                                )
+                            }
                         }
                     } else {
+                        setEndIconDrawable(R.drawable.ic_filter)
                         loadData()
                     }
                 }
-
 
                 setOnEditorActionListener { _, i, keyEvent ->
                     if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER || i == EditorInfo.IME_ACTION_DONE) {
@@ -128,82 +139,75 @@ class EmployeeFragment : BaseFragment() {
             }
 
             setEndIconOnClickListener {
-                openFilterDialog()
+                editText?.apply {
+                    if (text!!.isEmpty()) openFilterDialog()
+                    else text.clear()
+                }
             }
         }
 
     }
 
     private fun openFilterDialog() {
+        fDialog.show()
 
-        val fDialogBn = DialogUserFilterBinding.inflate(layoutInflater)
-        val fDialog = Dialog(requireContext(), R.style.Theme_Carpet)
+        fDialogBinding.apply {
 
-        var name: String?
-        var surname: String?
-        var phoneNumber: String?
-        var role: String? = null
-        var status: String? = null
+            btnApply.click {
+                isFilter = true
 
-        fDialog.apply {
-            setContentView(fDialogBn.root)
-            window?.attributes?.windowAnimations = R.style.DialogAnimation
-            window?.attributes = LayoutParams().apply {
-                copyFrom(window?.attributes)
-                width = LayoutParams.MATCH_PARENT
-                height = LayoutParams.MATCH_PARENT
-            }
-            show()
+                filterUser(
+                    UserFilter(
+                        name = if (etName.text().isNotEmpty()) etName.text()
+                            .lowercase() else null,
 
-            fDialogBn.apply {
-                toggleButtonRole.addOnButtonCheckedListener { group, checkedId, isChecked ->
-                    if (isChecked) {
-                        when (checkedId) {
-                            R.id.role_admin -> role = Constants.STR_ADMIN
-                            R.id.role_employee -> role = Constants.STR_EMPLOYEE
-                            R.id.role_customer -> role = Constants.STR_CUSTOMER
+                        surname = if (etSurname.text().isNotEmpty()) etSurname.text()
+                            .lowercase() else null,
+
+                        phoneNumber = if (etPhone.text()
+                                .isNotEmpty()
+                        ) "+998" + etPhone.text() else null,
+
+                        role = when (toggleButtonRole.checkedButtonId) {
+                            R.id.role_admin -> Constants.STR_ADMIN
+                            R.id.role_employee -> Constants.STR_EMPLOYEE
+                            R.id.role_customer -> Constants.STR_CUSTOMER
+                            else -> null
+                        },
+
+                        status = when (toggleButtonStatus.checkedButtonId) {
+                            R.id.status_active -> Constants.STR_ACTIVE
+                            R.id.status_not_active -> Constants.STR_NOT_ACTIVE
+                            R.id.status_blocked -> Constants.STR_BLOCKED
+                            else -> null
                         }
-                    } else if (group.checkedButtonId == View.NO_ID) {
-                        role = null
-                    }
-                }
-
-                toggleButtonStatus.addOnButtonCheckedListener { group, checkedId, isChecked ->
-                    if (isChecked) {
-                        when (checkedId) {
-                            R.id.status_active -> status = Constants.STR_ACTIVE
-                            R.id.status_not_active -> status = Constants.STR_NOT_ACTIVE
-                            R.id.status_blocked -> status = Constants.STR_BLOCKED
-                        }
-                    } else if (group.checkedButtonId == View.NO_ID) {
-                        status = null
-                    }
-                }
-
-                btnApply.click {
-                    isFilter = true
-                    name = if (etName.text().isNotEmpty()) etName.text().lowercase() else null
-                    surname =
-                        if (etSurname.text().isNotEmpty()) etSurname.text().lowercase() else null
-                    phoneNumber = if (etPhone.text().isNotEmpty()) "+998" + etPhone.text() else null
-                    filterUser(
-                        UserFilter(
-                            name = name,
-                            surname = surname,
-                            phoneNumber = phoneNumber,
-                            role = role,
-                            status = status
-                        )
                     )
-                    dismiss()
-                }
+                )
 
-                btnCancel.click {
-                    isFilter = false
-                    dismiss()
-                }
+                fDialog.dismiss()
+            }
+
+            btnCancel.click {
+                closeFilterDialog()
+                if (isFilter) loadData()
+            }
+
+            ivClose.click {
+                fDialog.dismiss()
             }
         }
+    }
+
+    private fun closeFilterDialog() {
+        isFilter = false
+        fDialogBinding.apply {
+            etName.editText?.text?.clear()
+            etSurname.editText?.text?.clear()
+            etPhone.editText?.text?.clear()
+            toggleButtonRole.clearChecked()
+            toggleButtonStatus.clearChecked()
+        }
+        fDialog.dismiss()
     }
 
     private fun observer() {

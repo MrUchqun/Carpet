@@ -53,12 +53,7 @@ object Extensions {
                     ResourcesCompat.getFont(requireActivity().applicationContext, R.font.poppins)
                 setTextColor(ContextCompat.getColor(requireActivity(), R.color.color_secondary))
             }
-            view.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.color_primary
-                )
-            )
+            view.setBackgroundResource(R.drawable.rounded_background)
         }.show()
     }
 
