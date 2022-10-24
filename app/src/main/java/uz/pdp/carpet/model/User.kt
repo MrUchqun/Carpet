@@ -8,7 +8,7 @@ data class User(
     val role: String,
     val status: Any,
     val surname: String,
-    val url: Any,
+    val url: String? = null,
     val visible: Any
 )
 

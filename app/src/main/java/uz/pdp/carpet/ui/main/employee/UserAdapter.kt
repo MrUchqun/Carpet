@@ -13,9 +13,11 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import uz.pdp.carpet.R
 import uz.pdp.carpet.databinding.ItemEmployeeBinding
 import uz.pdp.carpet.model.User
+import uz.pdp.carpet.utils.Constants
 import uz.pdp.carpet.utils.Constants.STR_ADMIN
 import uz.pdp.carpet.utils.Constants.STR_CUSTOMER
 
@@ -31,6 +33,10 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
                 tvName.text = "$name $surname"
                 tvPhone.text = phoneNumber
                 tvRole.text = getRole(role)
+                Glide.with(root.context)
+                    .load(Constants.BASE_URL + url?.substring(22))
+                    .placeholder(R.drawable.img_man).into(ivProfile)
+
             }
         }
 
