@@ -30,14 +30,16 @@ import kotlin.collections.ArrayList
 
 object Extensions {
 
-    fun Fragment.hideSoftKeyboard(editText: EditText) {
-        requireActivity().currentFocus?.let {
+    fun Fragment.hideSoftKeyboard(
+        view: View? = requireActivity().currentFocus
+    ) {
+        view?.let {
             val inputMethodManager =
                 ContextCompat.getSystemService(requireActivity(), InputMethodManager::class.java)!!
             inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
         }
 
-        editText.clearFocus()
+        view?.clearFocus()
     }
 
     fun View.click(click: () -> Unit) {

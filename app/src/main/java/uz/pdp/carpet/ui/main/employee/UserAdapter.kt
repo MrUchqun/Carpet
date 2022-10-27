@@ -9,11 +9,13 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import uz.pdp.carpet.R
 import uz.pdp.carpet.databinding.ItemEmployeeBinding
 import uz.pdp.carpet.model.User
@@ -34,9 +36,11 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
                 tvPhone.text = phoneNumber
                 tvRole.text = getRole(role)
                 Glide.with(root.context)
-                    .load(Constants.BASE_URL + url?.substring(22))
-                    .placeholder(R.drawable.img_man).into(ivProfile)
-
+                    .load(
+                        if (url != null) Constants.BASE_URL + url.substring(22)
+                        else R.drawable.img_man
+                    )
+                    .into(ivProfile)
             }
         }
 

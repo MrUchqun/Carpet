@@ -2,6 +2,7 @@ package uz.pdp.carpet.ui.main.employee
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -42,9 +43,21 @@ class EmployeeFragment : BaseFragment() {
     private lateinit var fDialog: Dialog
     private var isFilter = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        Log.d("EMPLOYEE_FRAGMENT", "onCreate")
+
+        loadData()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+
+        Log.d("EMPLOYEE_FRAGMENT", "onCreateView")
+
+
         _bn = FragmentEmployeeBinding.inflate(inflater, container, false)
         _fDialogBinding = DialogUserFilterBinding.inflate(inflater)
         return bn.root
@@ -52,10 +65,12 @@ class EmployeeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI(bn.parentView, bn.etSearch.editText!!)
+
+        Log.d("EMPLOYEE_FRAGMENT", "onViewCreated")
+
         observer()
         initViews()
-        loadData()
+        setupUI(view, bn.etSearch.editText!!)
     }
 
     private fun initViews() = bn.apply {
@@ -146,6 +161,7 @@ class EmployeeFragment : BaseFragment() {
 
     private fun openFilterDialog() {
         fDialog.show()
+        clearFocusDialog()
 
         fDialogBinding.apply {
 
@@ -154,15 +170,9 @@ class EmployeeFragment : BaseFragment() {
 
                 filterUser(
                     UserFilter(
-                        name = if (etName.text().isNotEmpty()) etName.text()
-                            .lowercase() else null,
-
-                        surname = if (etSurname.text().isNotEmpty()) etSurname.text()
-                            .lowercase() else null,
-
-                        phoneNumber = if (etPhone.text()
-                                .isNotEmpty()
-                        ) "+998" + etPhone.text() else null,
+                        name = etName.text().lowercase().ifEmpty { null },
+                        surname = etSurname.text().lowercase().ifEmpty { null },
+                        phoneNumber = etPhone.text().ifEmpty { null },
 
                         role = when (toggleButtonRole.checkedButtonId) {
                             R.id.role_admin -> Constants.STR_ADMIN
@@ -184,14 +194,28 @@ class EmployeeFragment : BaseFragment() {
             }
 
             btnCancel.click {
-                closeFilterDialog()
                 if (isFilter) loadData()
+                closeFilterDialog()
             }
 
             ivClose.click {
                 fDialog.dismiss()
             }
+
+            toggleButtonRole.addOnButtonCheckedListener { _, _, _ ->
+                clearFocusDialog()
+            }
+
+            toggleButtonStatus.addOnButtonCheckedListener { _, _, _ ->
+                clearFocusDialog()
+            }
         }
+    }
+
+    private fun clearFocusDialog() = fDialogBinding.apply {
+        hideSoftKeyboard(etSurname.editText!!)
+        hideSoftKeyboard(etPhone.editText!!)
+        hideSoftKeyboard(etName.editText!!)
     }
 
     private fun closeFilterDialog() {
@@ -239,6 +263,9 @@ class EmployeeFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        Log.d("EMPLOYEE_FRAGMENT", "onDestroyView")
+
         _bn = null
     }
 }
