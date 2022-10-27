@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uz.pdp.carpet.R
 import uz.pdp.carpet.model.User
@@ -25,6 +26,9 @@ class EmployeeViewModel @Inject constructor(
     private var _paginationUserList = SingleLiveEvent<Resource<List<User>>>()
     val paginationUserList: LiveData<Resource<List<User>>> get() = _paginationUserList
 
+    private var _profileById = SingleLiveEvent<Resource<User>>()
+    val profileById: LiveData<Resource<User>> get() = _profileById
+
     var currentPage = 0
     private var totalPage = 1
 
@@ -33,7 +37,6 @@ class EmployeeViewModel @Inject constructor(
         totalPage = 1
         profileAdmPaginationList()
     }
-
 
     fun profileAdmPaginationList() = viewModelScope.launch {
         if (currentPage < totalPage) {
@@ -88,6 +91,29 @@ class EmployeeViewModel @Inject constructor(
                 Resource.error(application.getString(R.string.str_network_error))
         } catch (e: Exception) {
             _paginationUserList.value =
+                Resource.error(application.getString(R.string.str_checking_information))
+        }
+    }
+
+    fun getUserById(userId: Int) = viewModelScope.launch {
+        try {
+            _profileById.value = Resource.loading()
+
+            myRepository.getProfileById(userId).let {
+                if (it.isSuccessful) {
+                    _profileById.value = Resource.success(it.body()!!)
+                } else if (it.code() == 401) {
+                    _paginationUserList.value =
+                        Resource.error(application.getString(R.string.str_relogin))
+                } else {
+                    _profileById.value = Resource.error(it.errorBody()!!.string())
+                }
+            }
+        } catch (e: SocketTimeoutException) {
+            _profileById.value =
+                Resource.error(application.getString(R.string.str_network_error))
+        } catch (e: Exception) {
+            _profileById.value =
                 Resource.error(application.getString(R.string.str_checking_information))
         }
     }

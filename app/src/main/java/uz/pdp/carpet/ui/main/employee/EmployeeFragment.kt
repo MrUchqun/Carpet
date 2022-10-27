@@ -11,6 +11,7 @@ import android.view.WindowManager.LayoutParams
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,7 @@ import uz.pdp.carpet.databinding.FragmentEmployeeBinding
 import uz.pdp.carpet.model.UserFilter
 import uz.pdp.carpet.ui.BaseFragment
 import uz.pdp.carpet.utils.Constants
+import uz.pdp.carpet.utils.Constants.STR_USER_ID
 import uz.pdp.carpet.utils.Extensions.click
 import uz.pdp.carpet.utils.Extensions.getSearchText
 import uz.pdp.carpet.utils.Extensions.hide
@@ -45,19 +47,12 @@ class EmployeeFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Log.d("EMPLOYEE_FRAGMENT", "onCreate")
-
         loadData()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
-        Log.d("EMPLOYEE_FRAGMENT", "onCreateView")
-
-
         _bn = FragmentEmployeeBinding.inflate(inflater, container, false)
         _fDialogBinding = DialogUserFilterBinding.inflate(inflater)
         return bn.root
@@ -65,9 +60,6 @@ class EmployeeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Log.d("EMPLOYEE_FRAGMENT", "onViewCreated")
-
         observer()
         initViews()
         setupUI(view, bn.etSearch.editText!!)
@@ -87,7 +79,16 @@ class EmployeeFragment : BaseFragment() {
         recyclerView.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = userAdapter
+            adapter = userAdapter.apply {
+                itemClickListener = object : UserAdapter.ItemClickListener {
+                    override fun itemClick(userId: Int) {
+                        findNavController().navigate(
+                            R.id.action_employeeFragment_to_updateUserFragment,
+                            Bundle().apply { putInt(STR_USER_ID, userId) }
+                        )
+                    }
+                }
+            }
 
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -263,9 +264,6 @@ class EmployeeFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-        Log.d("EMPLOYEE_FRAGMENT", "onDestroyView")
-
         _bn = null
     }
 }

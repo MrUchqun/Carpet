@@ -37,5 +37,21 @@
     <string name="str_apply">Apply</string>
     <string name="str_cancel">Cancel</string>
     <string name="str_filter">Filter</string>
+    <string name="str_status">Status</string>
+    <string name="str_role">Role</string>
+    <string name="str_save">Save</string>
+    <string name="str_invisible_user">Invisible user</string>
+
+    <string-array name="role_list">
+        <item>ADMIN</item>
+        <item>EMPLOYEE</item>
+        <item>CUSTOMER</item>
+    </string-array>
+
+    <string-array name="status_list">
+        <item>ACTIVE</item>
+        <item>NOT ACTIVE</item>
+        <item>BLOCKED</item>
+    </string-array>
 
 </resources>

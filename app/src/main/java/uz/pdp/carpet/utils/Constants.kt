@@ -17,4 +17,5 @@ object Constants {
     const val STR_ACTIVE = "ACTIVE"
     const val STR_NOT_ACTIVE = "NOT_ACTIVE"
     const val STR_BLOCKED = "BLOCKED"
+    const val STR_USER_ID = "userId"
 }

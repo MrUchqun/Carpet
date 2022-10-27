@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -22,11 +23,15 @@ import uz.pdp.carpet.model.User
 import uz.pdp.carpet.utils.Constants
 import uz.pdp.carpet.utils.Constants.STR_ADMIN
 import uz.pdp.carpet.utils.Constants.STR_CUSTOMER
+import uz.pdp.carpet.utils.Extensions.click
 
 
-class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBack()) {
+class UserAdapter :
+    ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBack()) {
 
-    class UserViewHolder(private val binding: ItemEmployeeBinding) :
+    var itemClickListener: ItemClickListener? = null
+
+    inner class UserViewHolder(private val binding: ItemEmployeeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
@@ -41,6 +46,10 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
                         else R.drawable.img_man
                     )
                     .into(ivProfile)
+            }
+
+            root.click {
+                itemClickListener?.itemClick(user.id)
             }
         }
 
@@ -80,5 +89,9 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBa
         val newList = currentList.toMutableList()
         if (newList != list) newList.addAll(list)
         submitList(newList)
+    }
+
+    interface ItemClickListener {
+        fun itemClick(userId: Int)
     }
 }

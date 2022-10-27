@@ -54,4 +54,8 @@ class MyRepositoryImpl @Inject constructor(
     override suspend fun searchProfile(userFilter: UserFilter): Response<List<User>> {
         return api.searchProfile(userFilter)
     }
+
+    override suspend fun getProfileById(userId: Int): Response<User> {
+        return api.getProfileById(userId)
+    }
 }

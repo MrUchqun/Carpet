@@ -1,15 +1,19 @@
 package uz.pdp.carpet.ui.main
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import dagger.hilt.android.AndroidEntryPoint
 import uz.pdp.carpet.R
 import uz.pdp.carpet.databinding.FragmentMainBinding
+
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -29,11 +33,15 @@ class MainFragment : Fragment() {
         setupBnv()
     }
 
-    private fun setupBnv() {
+    private fun setupBnv() = bn.bottomNavigation.apply {
         NavigationUI.setupWithNavController(
-            bn.bottomNavigation,
-            Navigation.findNavController(requireActivity(), R.id.fragment_view)
-        )
+            this,
+            Navigation.findNavController(requireActivity(), R.id.fragment_view).apply {
+                addOnDestinationChangedListener { _, destination, _ ->
+                    visibility = if (destination.id == R.id.updateUserFragment) View.GONE
+                    else View.VISIBLE
+                }
+            })
     }
 
     override fun onDestroyView() {

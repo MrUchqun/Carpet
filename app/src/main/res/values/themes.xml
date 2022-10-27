@@ -26,10 +26,15 @@
         <item name="android:fontFamily">@font/poppins</item>
     </style>
 
+    <style name="default_text_appearance" parent="prefix_text_appearance">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="active_text_appearance" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/poppins</item>
         <item name="android:textSize">12sp</item>
     </style>
+
 
     <style name="textInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxCornerRadiusBottomEnd">5dp</item>
@@ -60,6 +65,10 @@
 
     <style name="cornerSize10Dp">
         <item name="cornerSize">5dp</item>
+    </style>
+
+    <style name="corner_circle">
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="DialogAnimation">

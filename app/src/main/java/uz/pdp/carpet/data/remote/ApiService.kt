@@ -6,6 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import uz.pdp.carpet.model.*
 
@@ -25,4 +26,7 @@ interface ApiService {
 
     @POST("profile/adm/filter")
     suspend fun searchProfile(@Body userFilter: UserFilter): Response<List<User>>
+
+    @GET("profile/adm/{id}")
+    suspend fun getProfileById(@Path("id") userId: Int): Response<User>
 }

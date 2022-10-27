@@ -9,7 +9,15 @@
         android:id="@+id/employeeFragment"
         android:name="uz.pdp.carpet.ui.main.employee.EmployeeFragment"
         android:label="fragment_employee"
-        tools:layout="@layout/fragment_employee" />
+        tools:layout="@layout/fragment_employee">
+        <action
+            android:id="@+id/action_employeeFragment_to_updateUserFragment"
+            app:destination="@id/updateUserFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
+    </fragment>
     <fragment
         android:id="@+id/saleFragment"
         android:name="uz.pdp.carpet.ui.main.sale.SaleFragment"
@@ -30,4 +38,13 @@
         android:name="uz.pdp.carpet.ui.main.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/updateUserFragment"
+        android:name="uz.pdp.carpet.ui.main.employee.UpdateUserFragment"
+        android:label="fragment_update_user"
+        tools:layout="@layout/fragment_update_user">
+        <action
+            android:id="@+id/action_updateUserFragment_to_employeeFragment"
+            app:destination="@id/employeeFragment" />
+    </fragment>
 </navigation>

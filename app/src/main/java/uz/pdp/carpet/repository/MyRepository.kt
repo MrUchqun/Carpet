@@ -18,4 +18,7 @@ interface MyRepository {
     // for Employee Page
     suspend fun profileAdmPaginationList(page: Int, size: Int): Response<PageResponse>
     suspend fun searchProfile(userFilter: UserFilter): Response<List<User>>
+
+    // for Update user page
+    suspend fun getProfileById(userId: Int): Response<User>
 }

@@ -1,12 +1,12 @@
 package uz.pdp.carpet.model
 
 data class User(
-    val id: Any,
+    val id: Int,
     val jwt: String,
     val name: String,
     val phoneNumber: String,
     val role: String,
-    val status: Any,
+    val status: String,
     val surname: String,
     val url: String? = null,
     val visible: Any
