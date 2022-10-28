@@ -15,22 +15,31 @@
         android:background="@color/white"
         app:elevation="0dp">
 
-        <androidx.appcompat.widget.Toolbar
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll"
-            app:title="@string/str_employee">
+            android:layout_height="?attr/actionBarSize"
+            android:paddingHorizontal="22dp"
+            app:layout_scrollFlags="scroll">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="@string/str_employee"
+                android:textColor="@color/color_secondary"
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_add_person"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_person_add"
                 app:tint="@color/color_secondary" />
 
-        </androidx.appcompat.widget.Toolbar>
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/searchLinerLayout"

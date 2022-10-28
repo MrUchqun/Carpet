@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -32,42 +33,41 @@ class AuthViewModel @Inject constructor(
     private var _login = SingleLiveEvent<Resource<User>>()
     val login: LiveData<Resource<User>> get() = _login
 
-    fun signUp(userRegister: UserRegister) = viewModelScope.launch {
+    fun signUp(userRegister: UserRegister) = viewModelScope.launch(Dispatchers.IO) {
         try {
-            _register.value = Resource.loading()
+            _register.postValue(Resource.loading())
             myRepository.signUp(userRegister).let {
                 if (it.isSuccessful) {
                     myRepository.login()
                     myRepository.saveToken(it.body()!!.jwt)
-                    _register.value = Resource.success(it.body()!!)
+                    _register.postValue(Resource.success(it.body()!!))
                 } else {
-                    _register.value = Resource.error(it.errorBody()!!.string())
+                    _register.postValue(Resource.error(it.errorBody()!!.string()))
                 }
             }
         } catch (e: SocketTimeoutException) {
-            _register.value = Resource.error(application.getString(R.string.str_network_error))
+            _register.postValue(Resource.error(application.getString(R.string.str_network_error)))
         } catch (e: Exception) {
-            _register.value =
-                Resource.error(application.getString(R.string.str_checking_information))
+            _register.postValue(Resource.error(application.getString(R.string.str_checking_information)))
         }
     }
 
-    fun signIn(userLogin: UserLogin) = viewModelScope.launch {
-        _login.value = Resource.loading()
+    fun signIn(userLogin: UserLogin) = viewModelScope.launch(Dispatchers.IO) {
+        _login.postValue(Resource.loading())
         try {
             myRepository.signIn(userLogin).let {
                 if (it.isSuccessful) {
                     myRepository.login()
                     myRepository.saveToken(it.body()!!.jwt)
-                    _login.value = Resource.success(it.body()!!)
+                    _login.postValue(Resource.success(it.body()!!))
                 } else {
-                    _login.value = Resource.error(it.errorBody()!!.string())
+                    _login.postValue(Resource.error(it.errorBody()!!.string()))
                 }
             }
         } catch (e: SocketTimeoutException) {
-            _login.value = Resource.error(application.getString(R.string.str_network_error))
+            _login.postValue(Resource.error(application.getString(R.string.str_network_error)))
         } catch (e: Exception) {
-            _login.value = Resource.error(application.getString(R.string.str_checking_information))
+            _login.postValue(Resource.error(application.getString(R.string.str_checking_information)))
         }
     }
 

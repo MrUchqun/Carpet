@@ -59,6 +59,17 @@ object Extensions {
         }.show()
     }
 
+    fun Activity.toast(msg: String?) {
+        Snackbar.make(findViewById(android.R.id.content), msg!!, Snackbar.LENGTH_SHORT).apply {
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                typeface =
+                    ResourcesCompat.getFont(this@toast, R.font.poppins)
+                setTextColor(ContextCompat.getColor(this@toast, R.color.color_secondary))
+            }
+            view.setBackgroundResource(R.drawable.rounded_background)
+        }.show()
+    }
+
     fun TextInputLayout.text(): String {
         return editText!!.text.toString().trim()
     }

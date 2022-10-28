@@ -9,7 +9,7 @@ data class User(
     val status: String,
     val surname: String,
     val url: String? = null,
-    val visible: Any
+    val visible: Boolean
 )
 
 data class UserRegister(

@@ -1,6 +1,8 @@
 package uz.pdp.carpet.ui.main.employee
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import androidx.fragment.app.Fragment
@@ -17,6 +19,7 @@ import uz.pdp.carpet.model.User
 import uz.pdp.carpet.ui.BaseFragment
 import uz.pdp.carpet.utils.Constants
 import uz.pdp.carpet.utils.Constants.STR_USER_ID
+import uz.pdp.carpet.utils.Extensions.click
 import uz.pdp.carpet.utils.Extensions.hide
 import uz.pdp.carpet.utils.Extensions.show
 import uz.pdp.carpet.utils.Extensions.toast
@@ -52,11 +55,32 @@ class UpdateUserFragment : BaseFragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     private fun initViews(user: User) = bn.apply {
         user.apply {
+
+            Glide.with(this@UpdateUserFragment)
+                .load(
+                    if (url != null) Constants.BASE_URL + url.substring(22)
+                    else R.drawable.img_man
+                )
+                .into(ivProfile)
+
             tvFullName.text = "$name $surname"
             tvPhone.text = phoneNumber
+
+            ivCall.click {
+                requireActivity().startActivity(Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$phoneNumber")
+                })
+            }
+
+            ivSms.click {
+                requireActivity().startActivity(Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("smsto:$phoneNumber")
+                })
+            }
+
             tvStatus.apply {
                 setText(status)
                 setAdapter(
@@ -67,6 +91,7 @@ class UpdateUserFragment : BaseFragment() {
                     )
                 )
             }
+
             tvRole.apply {
                 setText(role)
                 setAdapter(
@@ -77,12 +102,22 @@ class UpdateUserFragment : BaseFragment() {
                     )
                 )
             }
-            Glide.with(this@UpdateUserFragment)
-                .load(
-                    if (url != null) Constants.BASE_URL + url.substring(22)
-                    else R.drawable.img_man
-                )
-                .into(ivProfile)
+
+            btnVisible.apply {
+                if (visible) {
+                    setText(R.string.str_invisible_user)
+                } else {
+                    setText(R.string.str_visible_user)
+                }
+            }
+
+            ivBack.click {
+                requireActivity().onBackPressed()
+            }
+
+            btnCancel.click {
+                requireActivity().onBackPressed()
+            }
         }
     }
 
@@ -91,12 +126,12 @@ class UpdateUserFragment : BaseFragment() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     frameBackground.visibility = View.INVISIBLE
-                    progressbar.visibility = View.GONE
+                    progressbarMain.visibility = View.GONE
 
                     initViews(it.data!!)
                 }
                 Resource.Status.ERROR -> {
-                    progressbar.visibility = View.GONE
+                    progressbarMain.visibility = View.GONE
                     it.message.let { msg ->
                         toast(msg)
                         logout(msg)
@@ -104,7 +139,7 @@ class UpdateUserFragment : BaseFragment() {
                 }
                 Resource.Status.LOADING -> {
                     frameBackground.visibility = View.VISIBLE
-                    progressbar.visibility = View.VISIBLE
+                    progressbarMain.visibility = View.VISIBLE
                 }
             }
         }

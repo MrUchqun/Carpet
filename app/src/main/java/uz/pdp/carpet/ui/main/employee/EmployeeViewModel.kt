@@ -38,83 +38,73 @@ class EmployeeViewModel @Inject constructor(
         profileAdmPaginationList()
     }
 
-    fun profileAdmPaginationList() = viewModelScope.launch {
+    fun profileAdmPaginationList() = viewModelScope.launch(Dispatchers.IO) {
         if (currentPage < totalPage) {
             try {
-                _paginationUserList.value = Resource.loading()
+                _paginationUserList.postValue(Resource.loading())
 
                 myRepository.profileAdmPaginationList(currentPage, 10).let {
                     if (it.isSuccessful) {
-                        _paginationUserList.value = Resource.success(it.body()!!.content)
+                        _paginationUserList.postValue(Resource.success(it.body()!!.content))
 
                         totalPage = it.body()!!.totalPages
                         currentPage++
 
                     } else if (it.code() == 401) {
-                        _paginationUserList.value =
-                            Resource.error(application.getString(R.string.str_relogin))
+                        _paginationUserList.postValue(Resource.error(application.getString(R.string.str_relogin)))
                     } else {
-                        _paginationUserList.value = Resource.error(it.errorBody()!!.string())
+                        _paginationUserList.postValue(Resource.error(it.errorBody()!!.string()))
                     }
                 }
 
             } catch (e: SocketTimeoutException) {
-                _paginationUserList.value =
-                    Resource.error(application.getString(R.string.str_network_error))
+                _paginationUserList.postValue(Resource.error(application.getString(R.string.str_network_error)))
             } catch (e: Exception) {
-                _paginationUserList.value =
-                    Resource.error(application.getString(R.string.str_checking_information))
+                _paginationUserList.postValue(Resource.error(application.getString(R.string.str_checking_information)))
             }
         } else {
-            _paginationUserList.value =
-                Resource.error(application.getString(R.string.str_thats_all))
+            _paginationUserList.postValue(Resource.error(application.getString(R.string.str_thats_all)))
         }
     }
 
-    fun searchProfile(userFilter: UserFilter) = viewModelScope.launch {
+    fun searchProfile(userFilter: UserFilter) = viewModelScope.launch(Dispatchers.IO) {
         try {
-            _paginationUserList.value = Resource.loading()
+            _paginationUserList.postValue(Resource.loading())
 
             myRepository.searchProfile(userFilter).let {
                 if (it.isSuccessful) {
-                    _paginationUserList.value = Resource.success(it.body()!!)
+                    _paginationUserList.postValue(Resource.success(it.body()!!))
                 } else if (it.code() == 401) {
-                    _paginationUserList.value =
-                        Resource.error(application.getString(R.string.str_relogin))
+                    _paginationUserList.postValue(Resource.error(application.getString(R.string.str_relogin)))
                 } else {
-                    _paginationUserList.value = Resource.error(it.errorBody()!!.string())
+                    _paginationUserList.postValue(Resource.error(it.errorBody()!!.string()))
                 }
             }
 
         } catch (e: SocketTimeoutException) {
-            _paginationUserList.value =
-                Resource.error(application.getString(R.string.str_network_error))
+            _paginationUserList.postValue(Resource.error(application.getString(R.string.str_network_error)))
         } catch (e: Exception) {
-            _paginationUserList.value =
-                Resource.error(application.getString(R.string.str_checking_information))
+            _paginationUserList.postValue(Resource.error(application.getString(R.string.str_checking_information)))
         }
     }
 
-    fun getUserById(userId: Int) = viewModelScope.launch {
+    fun getUserById(userId: Int) = viewModelScope.launch(Dispatchers.IO) {
         try {
-            _profileById.value = Resource.loading()
+            _profileById.postValue(Resource.loading())
 
             myRepository.getProfileById(userId).let {
                 if (it.isSuccessful) {
-                    _profileById.value = Resource.success(it.body()!!)
+                    _profileById.postValue(Resource.success(it.body()!!))
                 } else if (it.code() == 401) {
-                    _paginationUserList.value =
-                        Resource.error(application.getString(R.string.str_relogin))
+                    _profileById.postValue(Resource.error(application.getString(R.string.str_relogin)))
                 } else {
-                    _profileById.value = Resource.error(it.errorBody()!!.string())
+                    _profileById.postValue(Resource.error(it.errorBody()!!.string()))
                 }
             }
         } catch (e: SocketTimeoutException) {
-            _profileById.value =
-                Resource.error(application.getString(R.string.str_network_error))
+            _profileById.postValue(Resource.error(application.getString(R.string.str_network_error)))
         } catch (e: Exception) {
-            _profileById.value =
-                Resource.error(application.getString(R.string.str_checking_information))
+            _profileById.postValue(Resource.error(application.getString(R.string.str_checking_information)))
         }
     }
 
