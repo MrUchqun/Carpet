@@ -1,13 +1,11 @@
 package uz.pdp.carpet.ui.main.employee
 
-import android.app.Dialog
+import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager.LayoutParams
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -21,6 +19,7 @@ import uz.pdp.carpet.databinding.FragmentEmployeeBinding
 import uz.pdp.carpet.model.UserFilter
 import uz.pdp.carpet.ui.BaseFragment
 import uz.pdp.carpet.utils.Constants
+import uz.pdp.carpet.utils.Constants.STR_CANCELED
 import uz.pdp.carpet.utils.Constants.STR_USER_ID
 import uz.pdp.carpet.utils.Extensions.click
 import uz.pdp.carpet.utils.Extensions.getSearchText
@@ -42,7 +41,7 @@ class EmployeeFragment : BaseFragment() {
 
     private var _fDialogBinding: DialogUserFilterBinding? = null
     private val fDialogBinding get() = _fDialogBinding!!
-    private lateinit var fDialog: Dialog
+    private lateinit var fDialog: AlertDialog
     private var isFilter = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,14 +65,13 @@ class EmployeeFragment : BaseFragment() {
     }
 
     private fun initViews() = bn.apply {
-        fDialog = Dialog(requireContext(), R.style.Theme_Carpet).apply {
-            setContentView(fDialogBinding.root)
+        if (arguments?.getBoolean(STR_CANCELED) == true) {
+            loadData()
+        }
+
+        fDialog = AlertDialog.Builder(requireContext()).create().apply {
+            setView(fDialogBinding.root)
             window?.attributes?.windowAnimations = R.style.DialogAnimation
-            window?.attributes = LayoutParams().apply {
-                copyFrom(window?.attributes)
-                width = LayoutParams.MATCH_PARENT
-                height = LayoutParams.MATCH_PARENT
-            }
         }
 
         recyclerView.apply {
@@ -110,7 +108,10 @@ class EmployeeFragment : BaseFragment() {
 
             setOnRefreshListener {
                 if (etSearch.editText!!.text.isEmpty()) {
-                    if (isFilter) closeFilterDialog()
+                    if (isFilter) {
+                        clearFilterDialog()
+                    }
+
                     loadData()
                 } else {
                     hide()
@@ -196,7 +197,7 @@ class EmployeeFragment : BaseFragment() {
 
             btnCancel.click {
                 if (isFilter) loadData()
-                closeFilterDialog()
+                clearFilterDialog()
             }
 
             ivClose.click {
@@ -219,7 +220,7 @@ class EmployeeFragment : BaseFragment() {
         hideSoftKeyboard(etName.editText!!)
     }
 
-    private fun closeFilterDialog() {
+    private fun clearFilterDialog() {
         isFilter = false
         fDialogBinding.apply {
             etName.editText?.text?.clear()
@@ -259,7 +260,7 @@ class EmployeeFragment : BaseFragment() {
 
     private fun loadData() {
         userAdapter.submitList(null)
-        viewModel.loadData()
+        viewModel.loadData(0)
     }
 
     override fun onDestroyView() {

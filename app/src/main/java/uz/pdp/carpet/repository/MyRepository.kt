@@ -13,7 +13,7 @@ interface MyRepository {
     fun login()
     fun logout()
     fun getState(): String
-    fun saveToken(jwt: String)
+    fun saveToken(jwt: String?)
 
     // for Employee Page
     suspend fun profileAdmPaginationList(page: Int, size: Int): Response<PageResponse>
@@ -21,4 +21,6 @@ interface MyRepository {
 
     // for Update user page
     suspend fun getProfileById(userId: Int): Response<User>
+    suspend fun updateProfile(id: Int, user: User): Response<User>
+    suspend fun deleteProfile(id: Int): Response<User>
 }

@@ -18,4 +18,7 @@ object Constants {
     const val STR_NOT_ACTIVE = "NOT_ACTIVE"
     const val STR_BLOCKED = "BLOCKED"
     const val STR_USER_ID = "userId"
+    const val STR_CANCELED = "canceled"
+    const val COLOR_ERROR = "#FF6262"
+    const val COLOR_DISABLE = "#F8F8F8"
 }

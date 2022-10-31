@@ -40,10 +40,14 @@
     <string name="str_status">Status</string>
     <string name="str_role">Role</string>
     <string name="str_save">Save</string>
-    <string name="str_invisible_user">Make the user invisible</string>
-    <string name="str_visible_user">Make the user visible</string>
+    <string name="str_invisible_user">Make invisible</string>
+    <string name="str_visible_user">Make visible</string>
     <string name="str_for_exit">Please double click back button for exit</string>
     <string name="str_user_info">User info</string>
+    <string name="str_user_updated">User information updated</string>
+    <string name="str_info_exit">Please press back or cancel to exit</string>
+    <string name="str_save_changing">Do you want to save the change?</string>
+    <string name="str_ok">Ok</string>
 
     <string-array name="role_list">
         <item>ADMIN</item>

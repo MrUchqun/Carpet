@@ -30,6 +30,18 @@ import kotlin.collections.ArrayList
 
 object Extensions {
 
+    fun Activity.toast(msg: String?) {
+        Snackbar.make(findViewById(android.R.id.content), msg!!, Snackbar.LENGTH_SHORT).apply {
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                typeface =
+                    ResourcesCompat.getFont(this@toast, R.font.poppins)
+                setTextColor(ContextCompat.getColor(this@toast, R.color.color_secondary))
+            }
+            view.setBackgroundResource(R.drawable.rounded_background)
+        }.show()
+    }
+
+
     fun Fragment.hideSoftKeyboard(
         view: View? = requireActivity().currentFocus
     ) {
@@ -42,29 +54,12 @@ object Extensions {
         view?.clearFocus()
     }
 
-    fun View.click(click: () -> Unit) {
-        setOnClickListener {
-            click()
-        }
-    }
-
     fun Fragment.toast(msg: String?) {
         Snackbar.make(requireParentFragment().requireView(), msg!!, Snackbar.LENGTH_SHORT).apply {
             view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
                 typeface =
                     ResourcesCompat.getFont(requireActivity().applicationContext, R.font.poppins)
                 setTextColor(ContextCompat.getColor(requireActivity(), R.color.color_secondary))
-            }
-            view.setBackgroundResource(R.drawable.rounded_background)
-        }.show()
-    }
-
-    fun Activity.toast(msg: String?) {
-        Snackbar.make(findViewById(android.R.id.content), msg!!, Snackbar.LENGTH_SHORT).apply {
-            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
-                typeface =
-                    ResourcesCompat.getFont(this@toast, R.font.poppins)
-                setTextColor(ContextCompat.getColor(this@toast, R.color.color_secondary))
             }
             view.setBackgroundResource(R.drawable.rounded_background)
         }.show()
@@ -86,6 +81,10 @@ object Extensions {
         }
     }
 
+    fun EditText.getSearchText(): List<String> =
+        text.toString().trim().lowercase(Locale.getDefault()).split(" ")
+
+
     fun SwipeRefreshLayout.show() {
         isRefreshing = true
     }
@@ -94,6 +93,21 @@ object Extensions {
         isRefreshing = false
     }
 
-    fun EditText.getSearchText(): List<String> =
-        text.toString().trim().lowercase(Locale.getDefault()).split(" ")
+    fun View.click(click: () -> Unit) {
+        setOnClickListener {
+            click()
+        }
+    }
+
+    fun View.hide() {
+        visibility = View.INVISIBLE
+    }
+
+    fun View.show() {
+        visibility = View.VISIBLE
+    }
+
+    fun View.gone() {
+        visibility = View.GONE
+    }
 }

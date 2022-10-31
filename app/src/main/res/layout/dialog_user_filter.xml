@@ -7,257 +7,270 @@
     android:paddingHorizontal="20dp"
     android:paddingVertical="10dp">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:elevation="0dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <FrameLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:elevation="0dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:text="@string/str_filter"
+                        android:textColor="@color/color_secondary"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_close"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_close"
+                        app:tint="@color/color_secondary" />
+
+                </FrameLayout>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/str_fill_in_optional"
+                    android:textColor="@color/color_primary"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/ll_description">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_name"
+                    style="@style/textInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/str_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/color_secondary" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_surname"
+                    style="@style/textInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/str_surname">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/color_secondary" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_phone"
+                    style="@style/textInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/str_phone_number">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:inputType="phone"
+                        android:maxLength="13"
+                        android:textColor="@color/color_secondary" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center"
-                android:text="@string/str_filter"
-                android:textColor="@color/color_secondary"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/iv_close"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_close"
-                app:tint="@color/color_secondary" />
-
-        </FrameLayout>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/str_fill_in_optional"
-            android:textColor="@color/color_primary"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/ll_description">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_name"
-            style="@style/textInputStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/str_name">
-
-            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_role"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:inputType="textPersonName"
-                android:textColor="@color/color_secondary" />
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/str_select_role"
+                android:textColor="@color/color_primary"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/ll_input" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_surname"
-            style="@style/textInputStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/str_surname">
-
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleButtonRole"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:inputType="textPersonName"
-                android:textColor="@color/color_secondary" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_role"
+                app:singleSelection="true">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <Button
+                    android:id="@+id/role_admin"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/str_admin"
+                    android:textAllCaps="false" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_phone"
-            style="@style/textInputStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/str_phone_number">
+                <Button
+                    android:id="@+id/role_employee"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/str_employee"
+                    android:textAllCaps="false" />
 
-            <com.google.android.material.textfield.TextInputEditText
+                <Button
+                    android:id="@+id/role_customer"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/str_customer"
+                    android:textAllCaps="false" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <TextView
+                android:id="@+id/tv_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:inputType="phone"
-                android:maxLength="13"
-                android:textColor="@color/color_secondary" />
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/str_select_status"
+                android:textColor="@color/color_primary"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/toggleButtonRole" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleButtonStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_status"
+                app:singleSelection="true">
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/status_active"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/str_active"
+                    android:textAllCaps="false" />
 
-    <TextView
-        android:id="@+id/tv_role"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="@string/str_select_role"
-        android:textColor="@color/color_primary"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/ll_input" />
+                <Button
+                    android:id="@+id/status_not_active"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/str_not_active"
+                    android:textAllCaps="false" />
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/toggleButtonRole"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_role"
-        app:singleSelection="true">
+                <Button
+                    android:id="@+id/status_blocked"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/str_blocked"
+                    android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/role_admin"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:text="@string/str_admin"
-            android:textAllCaps="false" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <Button
-            android:id="@+id/role_employee"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:text="@string/str_employee"
-            android:textAllCaps="false" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/toggleButtonStatus">
 
-        <Button
-            android:id="@+id/role_customer"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:text="@string/str_customer"
-            android:textAllCaps="false" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/str_cancel"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/color_disable"
+                    app:cornerRadius="5dp" />
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_apply"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/str_apply"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/color_secondary"
+                    app:cornerRadius="5dp" />
 
-    <TextView
-        android:id="@+id/tv_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="@string/str_select_status"
-        android:textColor="@color/color_primary"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/toggleButtonRole" />
+            </LinearLayout>
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/toggleButtonStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_status"
-        app:singleSelection="true">
 
-        <Button
-            android:id="@+id/status_active"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:text="@string/str_active"
-            android:textAllCaps="false" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/status_not_active"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:text="@string/str_not_active"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/status_blocked"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:text="@string/str_blocked"
-            android:textAllCaps="false" />
-
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/toggleButtonStatus">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_cancel"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/str_cancel"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:backgroundTint="@color/color_disable"
-            app:cornerRadius="5dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_apply"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/str_apply"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:backgroundTint="@color/color_secondary"
-            app:cornerRadius="5dp" />
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,15 +1,15 @@
 package uz.pdp.carpet.model
 
 data class User(
-    val id: Int,
-    val jwt: String,
+    val id: Int? = null,
+    val jwt: String? = null,
     val name: String,
     val phoneNumber: String,
     val role: String,
     val status: String,
     val surname: String,
     val url: String? = null,
-    val visible: Boolean
+    val visible: Boolean? = null
 )
 
 data class UserRegister(

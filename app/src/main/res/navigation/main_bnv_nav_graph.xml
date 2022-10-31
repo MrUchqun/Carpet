@@ -15,8 +15,8 @@
             app:destination="@id/updateUserFragment"
             app:enterAnim="@anim/enter_from_left"
             app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
-            app:popExitAnim="@anim/exit_to_left" />
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/saleFragment"
@@ -45,6 +45,10 @@
         tools:layout="@layout/fragment_update_user">
         <action
             android:id="@+id/action_updateUserFragment_to_employeeFragment"
-            app:destination="@id/employeeFragment" />
+            app:destination="@id/employeeFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popUpTo="@id/main_bnv_nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

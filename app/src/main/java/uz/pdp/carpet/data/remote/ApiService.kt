@@ -1,13 +1,7 @@
 package uz.pdp.carpet.data.remote
 
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import uz.pdp.carpet.model.*
 
 interface ApiService {
@@ -29,4 +23,10 @@ interface ApiService {
 
     @GET("profile/adm/{id}")
     suspend fun getProfileById(@Path("id") userId: Int): Response<User>
+
+    @PUT("profile/adm/{id}")
+    suspend fun updateProfile(@Path("id") id: Int, @Body user: User): Response<User>
+
+    @DELETE("/profile/adm")
+    suspend fun deleteProfileById(@Query("id") id: Int): Response<User>
 }

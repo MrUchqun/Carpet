@@ -1,7 +1,10 @@
 package uz.pdp.carpet
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import uz.pdp.carpet.databinding.ActivityMainBinding
@@ -22,8 +25,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val navController = Navigation.findNavController(this.findViewById(R.id.fragment_view))
-        if (navController.currentDestination?.id == R.id.employeeFragment && countBackPressed > 0) {
+        val view: View? = findViewById(R.id.fragment_view)
+        if (view != null && Navigation.findNavController(view).currentDestination?.id == R.id.employeeFragment && countBackPressed > 0) {
             countBackPressed--
             toast(getString(R.string.str_for_exit))
         } else {

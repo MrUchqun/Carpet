@@ -2,6 +2,7 @@ package uz.pdp.carpet.ui.main.employee
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -21,6 +22,8 @@ import uz.pdp.carpet.R
 import uz.pdp.carpet.databinding.ItemEmployeeBinding
 import uz.pdp.carpet.model.User
 import uz.pdp.carpet.utils.Constants
+import uz.pdp.carpet.utils.Constants.COLOR_DISABLE
+import uz.pdp.carpet.utils.Constants.COLOR_ERROR
 import uz.pdp.carpet.utils.Constants.STR_ADMIN
 import uz.pdp.carpet.utils.Constants.STR_CUSTOMER
 import uz.pdp.carpet.utils.Extensions.click
@@ -34,7 +37,7 @@ class UserAdapter :
     inner class UserViewHolder(private val binding: ItemEmployeeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n")
+        @SuppressLint("SetTextI18n", "ResourceAsColor")
         fun bind(user: User) = binding.apply {
             user.apply {
                 tvName.text = "$name $surname"
@@ -46,10 +49,12 @@ class UserAdapter :
                         else R.drawable.img_man
                     )
                     .into(ivProfile)
-            }
+                root.click {
+                    itemClickListener?.itemClick(id!!)
+                }
 
-            root.click {
-                itemClickListener?.itemClick(user.id)
+                mainCardView.strokeColor =
+                    Color.parseColor(if (visible == false) COLOR_ERROR else COLOR_DISABLE)
             }
         }
 

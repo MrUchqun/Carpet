@@ -20,6 +20,10 @@ class MyRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : MyRepository {
 
+    /**
+     * signUp, signIn, login, logout, getState and saveToken functions for AUTH
+     */
+
     override suspend fun signUp(userRegister: UserRegister): Response<User> {
         return api.signUp(userRegister)
     }
@@ -43,9 +47,13 @@ class MyRepositoryImpl @Inject constructor(
         return sharedPreferences.getString(STATE, USER_LOGOUT)!!
     }
 
-    override fun saveToken(jwt: String) {
+    override fun saveToken(jwt: String?) {
         sharedPreferences.edit().putString(JWT_TOKEN, jwt).apply()
     }
+
+    /**
+     * profileAdmPaginationList, searchProfile functions for EMPLOYEE PAGE
+     */
 
     override suspend fun profileAdmPaginationList(page: Int, size: Int): Response<PageResponse> {
         return api.profileAdmPaginationList(page, size)
@@ -55,7 +63,19 @@ class MyRepositoryImpl @Inject constructor(
         return api.searchProfile(userFilter)
     }
 
+    /**
+     * getProfileById, updateProfile functions for UPDATE USER PAGE
+     */
+
     override suspend fun getProfileById(userId: Int): Response<User> {
         return api.getProfileById(userId)
+    }
+
+    override suspend fun updateProfile(id: Int, user: User): Response<User> {
+        return api.updateProfile(id, user)
+    }
+
+    override suspend fun deleteProfile(id: Int): Response<User> {
+        return api.deleteProfileById(id)
     }
 }
